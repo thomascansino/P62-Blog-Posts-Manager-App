@@ -1,0 +1,24 @@
+.button-container {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button {
+    cursor: pointer;
+    background-color: #111111;
+    padding-block: 0.5rem;
+    padding-inline: 1rem;
+    margin-inline: 0.25rem;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 13px;
+    text-align: center;
+    box-sizing: border-box;
+    width: 20%;
+}
+
+.activePost {
+    background-color: lightgrey;
+}
