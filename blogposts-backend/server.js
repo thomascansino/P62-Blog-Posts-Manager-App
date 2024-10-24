@@ -9,7 +9,8 @@ const port = process.env.PORT || 5000;
 connectDb();
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL // allow requests from frontend server
+    origin: process.env.FRONTEND_URL, // allow requests from frontend server
+    credentials: true, // allows cookies or auth headers to be sent along with requests
 }));
 
 app.use(express.json());
