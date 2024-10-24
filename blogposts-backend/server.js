@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000;
 connectDb();
 
 app.use(cors({
-    origin: 'http://localhost:5173' // allow requests from frontend server
+    origin: process.env.FRONTEND_URL // allow requests from frontend server
 }));
 
 app.use(express.json());
