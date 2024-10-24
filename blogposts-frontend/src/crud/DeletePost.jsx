@@ -10,7 +10,7 @@ function DeletePost ({ isDeletePostVisible }){
 
     const deletePost = async (postId) => {
         try {
-            const response = await axios.delete(`http://localhost:5001/api/posts/${postId}`, {
+            const response = await axios.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/posts/${postId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -33,7 +33,7 @@ function DeletePost ({ isDeletePostVisible }){
 
     const getPosts = async () => {
         try {
-            const response = await axios.get('http://localhost:5001/api/posts', {
+            const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/posts`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

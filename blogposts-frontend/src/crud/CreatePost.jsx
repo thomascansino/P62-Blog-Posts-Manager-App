@@ -22,7 +22,7 @@ function CreatePost ({ isCreatePostVisible }){
 
     const createPost = async () => {
         try {
-            const response = await axios.post('http://localhost:5001/api/posts', data, config);
+            const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/posts`, data, config);
             setNotification('Post saved!✔️');
             console.log(response.data);
         } catch (err) {

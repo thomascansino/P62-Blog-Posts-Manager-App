@@ -11,7 +11,7 @@ function PrivateRoute () {
         const verifyToken = async () => {
             try {
                 if ( token ) {
-                    const response = await axios.get('http://localhost:5001/api/users/current', {
+                    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/users/current`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },

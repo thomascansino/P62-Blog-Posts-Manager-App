@@ -22,7 +22,7 @@ function ModifyPost ({ isModifyPostVisible, post }){
 
     const modifyPost = async () => {
         try {
-            const response = await axios.put(`http://localhost:5001/api/posts/${post._id}`, data, config);
+            const response = await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/posts/${post._id}`, data, config);
             setNotification('Post updated!✔️');
             console.log(response.data);
         } catch (err) {

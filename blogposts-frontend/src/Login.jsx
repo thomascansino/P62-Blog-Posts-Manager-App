@@ -21,7 +21,7 @@ function Login() {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://localhost:5001/api/users/login', { email, password })
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/users/login`, { email, password })
       if ( response.data.accessToken ) {
         localStorage.setItem('token', response.data.accessToken);
         navigate('/home');
