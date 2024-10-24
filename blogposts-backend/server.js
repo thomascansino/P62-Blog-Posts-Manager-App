@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000;
 connectDb();
 
 app.use(cors({
-    origin: ["https://p62-blog-posts-manager-app-aeph.vercel.app"], // allow requests from frontend server 
+    origin: ["https://p62-blog-posts-manager-app-aeph.vercel.app/login"], // allow requests from frontend server 
     credentials: true, // allows cookies or auth headers to be sent along with requests
 }));
 
