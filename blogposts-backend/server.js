@@ -8,7 +8,11 @@ const port = process.env.PORT || 5000;
 
 connectDb();
 
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all origins temporarily
+    credentials: false // Disable credentials temporarily
+}));
+
 
 app.use(express.json());
 
