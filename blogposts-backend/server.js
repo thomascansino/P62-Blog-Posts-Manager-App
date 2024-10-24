@@ -9,9 +9,11 @@ const port = process.env.PORT || 5000;
 connectDb();
 
 app.use(cors({
-    origin: '*', // Allow all origins temporarily
-    credentials: false // Disable credentials temporarily
-}));
+    origin: process.env.FRONTEND_URL, // Specify your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+    credentials: true // Allow credentials
+});
 
 
 app.use(express.json());
