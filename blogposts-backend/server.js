@@ -19,6 +19,10 @@ app.use('/api/users', require('./routes/userRoutes'));
 
 app.use('/api/posts', require('./routes/blogRoutes'));
 
+app.get('/', (req, res) => {
+    res.json({message:'test'});
+});
+
 app.use(errorHandler);
 
 app.listen(port, () => {
