@@ -14,11 +14,11 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/server.js",  // Direct API requests to your server.js file
+      "dest": "/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/src/$1", // Serve static files for frontend requests
+      "dest": "/src/$1"
     }
   ]
 }
