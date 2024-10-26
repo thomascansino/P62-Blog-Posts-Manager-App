@@ -1,25 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import GetPost from './GetPost.jsx'
 
-function GetPosts ({ isGetPostVisible, setIsGetPostVisible, isGetPostsVisible, setGetAllPostsText }){
-    const [blogPosts, setBlogPosts] = useState([]);
-    const [selectedPost, setSelectedPost] = useState([]);
-    const token = localStorage.getItem('token'); 
-
-    const getPosts = async () => {
-        try {
-            const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/posts`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setBlogPosts(response.data);
-            console.log(response.data);
-        } catch (err) {
-            console.error('Failed to get all posts:', err.response.data.message);
-        };
-    };
+function GetPosts ({ getPosts, blogPosts, isGetPostVisible, setIsGetPostVisible, setGetAllPostsText }){
+    const [selectedPost, setSelectedPost] = useState([]); 
 
     const handlePostClick = (post) => {
         setSelectedPost(post);
@@ -29,26 +12,24 @@ function GetPosts ({ isGetPostVisible, setIsGetPostVisible, isGetPostsVisible, s
 
     useEffect(() => {
         getPosts();
-    }, [isGetPostsVisible]);
+    }, []);
 
-    if ( isGetPostsVisible ) {
-        if ( blogPosts.length > 0 && !isGetPostVisible ) {
-            return (
-                <ul>
-                    {blogPosts.map((post) => (
-                        <li key={post._id} onClick={() => handlePostClick(post)}>{post.title}</li>
-                    ))}
-                </ul>
-            )
-        } else if ( isGetPostVisible ) {
-            return (
-                <div>
-                    <GetPost isGetPostVisible={isGetPostVisible} post={selectedPost}/>
-                </div>
-            )
-        } else {
-            return 'No posts available.'
-        };
+    if ( blogPosts.length > 0 && !isGetPostVisible ) {
+        return (
+            <ul>
+                {blogPosts.map((post) => (
+                    <li key={post._id} onClick={() => handlePostClick(post)}>{post.title}</li>
+                ))}
+            </ul>
+        )
+    } else if ( isGetPostVisible ) {
+        return (
+            <div>
+                <GetPost isGetPostVisible={isGetPostVisible} post={selectedPost}/>
+            </div>
+        )
+    } else {
+        return 'No posts available.'
     };
     
 };

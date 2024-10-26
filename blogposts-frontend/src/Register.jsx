@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import backdrop from './assets/backdrop.jpg';
@@ -9,6 +9,10 @@ function Register() {
   const [ email, setEmail ] = useState();
   const [ password, setPassword ] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem('token');
+  }, []);
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -24,6 +28,11 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if ( !username || !email || !password ) {
+      alert('All fields are mandatory');
+      return;
+    };
     
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/users/register`, { username, email, password })
@@ -67,8 +76,8 @@ function Register() {
             <i className="ri-lock-2-line"></i>
           </div>
 
-          <div className={styles['login-button']} onClick={handleRegisterClick}>
-            Register
+          <div>
+            <button className={styles['login-button']} onClick={handleRegisterClick}>Register</button>
           </div>
 
           <div>

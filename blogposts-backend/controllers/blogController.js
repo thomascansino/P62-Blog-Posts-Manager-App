@@ -47,7 +47,10 @@ const getPost = asyncHandler(async (req, res) => {
 //@route PUT /api/posts/:id
 //@access private
 const updatePost = asyncHandler(async (req, res) => {
+    const { title, body } = req.body;
+    
     const post = await Post.findById(req.params.id);
+    
     if ( !post ) {
         res.status(404);
         throw new Error("This post doesn't exist!");
@@ -56,6 +59,11 @@ const updatePost = asyncHandler(async (req, res) => {
     if ( post.user_id.toString() !== req.user.id ) {
         res.status(403);
         throw new Error("User don't have permission to update other user posts");
+    };
+
+    if ( !title || !body ) {
+        res.status(400);
+        throw new Error(`A ${ !title && !body ? 'title and body' : !title ? 'title' : 'body' } is/are mandatory.`);
     };
 
     const updatedPost = await Post.findByIdAndUpdate(

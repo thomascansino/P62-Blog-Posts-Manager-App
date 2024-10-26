@@ -84,6 +84,9 @@ li:hover {
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 4rem;
+  border: none;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
   color: #000000;
   font-size: 16px;

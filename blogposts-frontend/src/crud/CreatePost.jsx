@@ -3,7 +3,7 @@ import axios from 'axios'
 import homeStyles from '../Home.module.css'
 import createPostStyles from './CreatePost.module.css'
 
-function CreatePost ({ isCreatePostVisible }){
+function CreatePost (){
     const [body, setBody] = useState('');
     const [title, setTitle] = useState('');
     const [notification, setNotification] = useState('');
@@ -21,6 +21,11 @@ function CreatePost ({ isCreatePostVisible }){
     };
 
     const createPost = async () => {
+        if ( !body || !title ) {
+            alert(`A ${ !title && !body ? 'title and body' : !title ? 'title' : 'body' } is/are mandatory.`);
+            return;
+        };
+        
         try {
             const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/posts`, data, config);
             setNotification('Post saved!✔️');
@@ -44,23 +49,21 @@ function CreatePost ({ isCreatePostVisible }){
         setNotification('');
     };
 
-    if ( isCreatePostVisible ){
-        return (
-            <>
-                <div>
-                    <input placeholder='Title' className={createPostStyles.inputBox} type='text' value={title} onChange={handleTitle}/>
-                </div>
-                <div>
-                    <textarea placeholder='Content' value={body} onChange={handleBody} />
-                </div>
-                <div className={createPostStyles['button-container']}>
-                    <div className={homeStyles.button} onClick={handleClear}>Clear</div>
-                    <div>{notification}</div>
-                    <div className={homeStyles.button} onClick={createPost}>Save Post</div>
-                </div>
-            </>
-        )
-    };
+    return (
+        <>
+            <div>
+                <input placeholder='Title' className={createPostStyles.inputBox} type='text' value={title} onChange={handleTitle}/>
+            </div>
+            <div>
+                <textarea placeholder='Content' value={body} onChange={handleBody} />
+            </div>
+            <div className={createPostStyles['button-container']}>
+                <div className={homeStyles.button} onClick={handleClear}>Clear</div>
+                <div>{notification}</div>
+                <div className={homeStyles.button} onClick={createPost}>Save Post</div>
+            </div>
+        </>
+    );
 
 };
 

@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import deletePostStyles from './DeletePost.module.css'
 
-function DeletePost ({ isDeletePostVisible }){
-    const [blogPosts, setBlogPosts] = useState([]);
+function DeletePost ({ getPosts, blogPosts }){
     const [activePostIds, setActivePostIds] = useState([]);
     const [isDeleteTriggered, setIsDeleteTriggered] = useState(false);
     const token = localStorage.getItem('token');
@@ -31,20 +30,6 @@ function DeletePost ({ isDeletePostVisible }){
         };
     };
 
-    const getPosts = async () => {
-        try {
-            const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/posts`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setBlogPosts(response.data);
-            console.log(response.data);
-        } catch (err) {
-            console.error('Failed to get all posts:', err.response.data.message);
-        };
-    };
-
     const handlePostClick = (post) => {
         if (activePostIds.includes(post._id)) {
             setActivePostIds(activePostIds.filter((id) => id !== post._id));
@@ -55,27 +40,24 @@ function DeletePost ({ isDeletePostVisible }){
 
     useEffect(() => {
         getPosts();
-    }, [isDeletePostVisible, isDeleteTriggered]);
+    }, [isDeleteTriggered]);
 
-    if ( isDeletePostVisible ) {
-        if ( blogPosts.length > 0) {
-            return (
-                <>
-                    <ul>
-                        {blogPosts.map((post) => (
-                            <li key={post._id} onClick={() => handlePostClick(post)} className={activePostIds.includes(post._id) ? deletePostStyles.activePost : null}>{post.title}</li>
-                        ))}
-                    </ul>
-                    <div className={deletePostStyles['button-container']}>
-                        <div className={deletePostStyles.button} onClick={deleteMultiplePosts}>Delete</div>
-                    </div>
-                </>
-            )
-        } else {
-            return 'No posts available.'
-        };
+    if ( blogPosts.length > 0 ) {
+        return (
+            <>
+                <ul>
+                    {blogPosts.map((post) => (
+                        <li key={post._id} onClick={() => handlePostClick(post)} className={activePostIds.includes(post._id) ? deletePostStyles.activePost : null}>{post.title}</li>
+                    ))}
+                </ul>
+                <div className={deletePostStyles['button-container']}>
+                    <div className={deletePostStyles.button} onClick={deleteMultiplePosts}>Delete</div>
+                </div>
+            </>
+        )
+    } else {
+        return 'No posts available.'
     };
-    
 
 };
 

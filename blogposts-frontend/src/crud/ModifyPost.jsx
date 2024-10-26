@@ -21,6 +21,11 @@ function ModifyPost ({ isModifyPostVisible, post }){
     };
 
     const modifyPost = async () => {
+        if ( !body || !title ) {
+            alert(`A ${ !title && !body ? 'title and body' : !title ? 'title' : 'body' } is/are mandatory.`);
+            return;
+        };
+        
         try {
             const response = await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/posts/${post._id}`, data, config);
             setNotification('Post updated!✔️');
@@ -48,7 +53,7 @@ function ModifyPost ({ isModifyPostVisible, post }){
         return (
             <>
                 <div>
-                    <input className={createPostStyles.inputBox} type='text' value={title} onChange={handleTitle}/>
+                    <input className={createPostStyles.inputBox} placeholder='Title' type='text' value={title} onChange={handleTitle}/>
                 </div>
                 <div>
                     <textarea placeholder='Content' value={body} onChange={handleBody} />

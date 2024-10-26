@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import backdrop from './assets/backdrop.jpg';
@@ -8,6 +8,10 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem('token');
+  }, []);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -19,6 +23,11 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if ( !email || !password ) {
+      alert('All fields are mandatory');
+      return;
+    };
     
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/users/login`, { email, password })
@@ -31,11 +40,6 @@ function Login() {
         alert(err.response.data.message);
     };
 
-  };
-
-  const handleLoginClick = () => {
-    const form = document.querySelector('form');
-    form.requestSubmit();
   };
 
   return (
@@ -59,11 +63,9 @@ function Login() {
                   <i className="ri-lock-2-line"></i>
                 </div>
 
-                <div className={styles['forgot-pass-container']}>
-                    <span className={`${styles['lighter-bold']} ${styles['hover-pointer']}`}>Forgot Password?</span>
+                <div>
+                  <button type='submit' className={styles['login-button']}>Login</button>
                 </div>
-
-                <div className={styles['login-button']} onClick={handleLoginClick}>Login</div>
 
                 <div className={styles['register-container']}>
                     <span>Don't have an account? <Link to='/register'><span className={styles['lighter-bold']}>Register</span></Link></span>

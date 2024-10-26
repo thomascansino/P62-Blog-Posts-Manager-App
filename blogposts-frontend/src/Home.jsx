@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import GetPosts from './crud/GetPosts.jsx'
 import CreatePost from './crud/CreatePost.jsx'
 import UpdatePost from './crud/UpdatePost.jsx'
@@ -15,8 +16,28 @@ function Home() {
   const [isDeletePostVisible, setIsDeletePostVisible] = useState(false);
   const [getAllPostsText, setGetAllPostsText] = useState('Get All Posts');
   const [updatePostText, setUpdatePostText] = useState('Update Post');
-  const [activeButton, setActiveButton] = useState();
+  const [activeButton, setActiveButton] = useState('');
+  const [blogPosts, setBlogPosts] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    handleGetPosts();
+  }, []);
+
+  const getPosts = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/posts`, {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      });
+      setBlogPosts(response.data);
+      console.log(response.data);
+    } catch (err) {
+      console.error('Failed to get all posts:', err.response.data.message);
+    };
+  };
 
   const handleGetPosts = () => {
     setIsGetPostVisible(false);
@@ -82,10 +103,31 @@ function Home() {
             <div className={activeButton === 'deletePost' ? styles.activeButton : styles.button} onClick={handleDeletePost}>Delete Post</div>
           </div>
           <div className={styles['window-container']}>
-            <GetPosts isGetPostsVisible={isGetPostsVisible} isGetPostVisible={isGetPostVisible} setIsGetPostVisible={setIsGetPostVisible} setGetAllPostsText={setGetAllPostsText} />
-            <CreatePost isCreatePostVisible={isCreatePostVisible} />
-            <UpdatePost isUpdatePostVisible={isUpdatePostVisible} isModifyPostVisible={isModifyPostVisible} setIsModifyPostVisible={setIsModifyPostVisible} setUpdatePostText={setUpdatePostText} />
-            <DeletePost isDeletePostVisible={isDeletePostVisible} />
+            
+            {isGetPostsVisible &&
+            <GetPosts 
+            getPosts={getPosts}
+            blogPosts={blogPosts}
+            isGetPostVisible={isGetPostVisible} 
+            setIsGetPostVisible={setIsGetPostVisible} 
+            setGetAllPostsText={setGetAllPostsText} />}
+
+            {isCreatePostVisible &&
+            <CreatePost />}
+
+            {isUpdatePostVisible &&
+            <UpdatePost 
+            getPosts={getPosts}
+            blogPosts={blogPosts}
+            isModifyPostVisible={isModifyPostVisible} 
+            setIsModifyPostVisible={setIsModifyPostVisible} 
+            setUpdatePostText={setUpdatePostText} />}
+            
+            {isDeletePostVisible &&
+            <DeletePost 
+            getPosts={getPosts} 
+            blogPosts={blogPosts} />}
+            
           </div>
         </div>
     </>
